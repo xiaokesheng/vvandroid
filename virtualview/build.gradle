@@ -1,0 +1,130 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2018 Alibaba Group
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
+apply plugin: 'com.android.library'
+
+buildscript {
+    repositories {
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+        maven { url "http://oss.jfrog.org/oss-snapshot-local/" }
+        mavenCentral()
+        jcenter()
+        maven { url 'https://maven.google.com' }
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.3.0'
+    }
+}
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
+    maven { url "http://oss.jfrog.org/oss-snapshot-local/" }
+    jcenter()
+    mavenLocal()
+    maven { url 'https://maven.google.com' }
+}
+
+ext {
+    bintrayRepo = 'Tangram'
+    bintrayName = 'Virtualview-Android'
+
+    publishedGroupId = project.hasProperty('GROUP') ? GROUP : ''
+    libraryName = project.hasProperty('ARTIFACT') ? ARTIFACT : ''
+    artifact = project.hasProperty('ARTIFACT') ? ARTIFACT : ''
+
+    libraryDescription = 'A light way to build Android UI in XML'
+
+    siteUrl = 'https://github.com/alibaba/Virtualview-Android'
+    gitUrl = 'git@github.com:alibaba/Virtualview-Android.git'
+
+    libraryVersion = project.hasProperty('VERSION_NAME') ? VERSION_NAME : ''
+
+    developerId = 'longerian'
+    developerName = 'longerian'
+    developerEmail = 'xlhongultimate@gmail.com'
+
+    licenseName = 'MIT'
+    licenseUrl = 'https://opensource.org/licenses/MIT'
+    allLicenses = ["MIT"]
+}
+
+android {
+    compileSdkVersion System.properties['compileSdkVersion'] ? Integer.parseInt(System.properties['compileSdkVersion']) : 25
+    buildToolsVersion System.properties['buildToolsVersion'] ? System.properties['buildToolsVersion'] : '25.0.3'
+
+    lintOptions {
+        abortOnError false
+    }
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion System.properties['targetSdkVersion'] ? Integer.parseInt(System.properties['targetSdkVersion']) : 25
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+}
+
+configurations.all {
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 10, 'seconds'
+}
+
+dependencies {
+    testCompile 'junit:junit:4.12'
+    compile 'com.android.support:support-v4:26.0.2@aar'
+    compile 'com.android.support:support-compat:26.0.2@aar'
+    compile 'com.android.support:support-annotations:26.0.2'
+    compile('com.alibaba.android:virtual-common:1.0.11') {
+        changing = true
+    }
+    compile 'com.android.support:recyclerview-v7:26.0.2@aar'
+    compile 'com.alibaba:fastjson:1.1.70.android'
+}
+
+File deployConfig = rootProject.file('jcenterInstall.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('jcenterInstall.gradle')
+}
+
+deployConfig = rootProject.file('jcenterDeploy.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('jcenterDeploy.gradle')
+}
+
+deployConfig = rootProject.file('deploy.gradle')
+if (deployConfig.exists()) {
+    apply from: rootProject.file('deploy.gradle')
+}
