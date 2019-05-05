@@ -110,14 +110,11 @@ public class PreviewActivity extends AppCompatActivity {
                 Log.d(TAG, "TYPE_Exposure view name:" + data.mVB.getTag("name"));
 
                 Log.d(TAG, "TYPE_Exposure view traceId:" + data.mVB.getTag("activityTraceId"));
-//                    Toast.makeText(PreviewActivity.this,
-//                            "TYPE_Exposure view name:" + data.mVB.getTag("name")
-//                                    + "traceId:" + data.mVB.getTag("activityTraceId"), Toast.LENGTH_SHORT).show();
                 return true;
             }
         });
 
-        refreshByUrl(null);
+//        refreshByUrl(null);
     }
 
     @Override

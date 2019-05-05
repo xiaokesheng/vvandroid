@@ -56,7 +56,7 @@ public class ComponentActivity extends PreviewActivity {
         mTemplateName = getIntent().getStringExtra("name");
         String data = getIntent().getStringExtra("data");
         if (!TextUtils.isEmpty(data)) {
-            mJsonData = getFastJsonDataFromAsset(data);
+            mJsonData = getJSONDataFromAsset(data);
         }
 
         setTitle(mTemplateName);
@@ -81,22 +81,4 @@ public class ComponentActivity extends PreviewActivity {
         }
         return null;
     }
-
-    private com.alibaba.fastjson.JSONObject getFastJsonDataFromAsset(String name) {
-        try {
-            InputStream inputStream = getAssets().open(name);
-            BufferedReader inputStreamReader = new BufferedReader(new InputStreamReader(inputStream));
-            StringBuilder sb = new StringBuilder();
-            String str;
-            while ((str = inputStreamReader.readLine()) != null) {
-                sb.append(str);
-            }
-            inputStreamReader.close();
-            return JSON.parseObject(sb.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
 }
